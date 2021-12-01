@@ -14,23 +14,10 @@ static class Solutions
 
     public static string D_1_2(string[] input)
     {
-        return D_1_1(input
-            .Select(int.Parse)
-            .SelectMany((v, i) => new[]
-            {
-                (Window: i, Value: v),
-                (Window: i + 1, Value: v),
-                (Window: i + 2, Value: v)
-            })
-            .Where(x => x.Window < input.Length - 2)
-            .Aggregate(
-                new int[input.Length - 2],
-                (acc, curr) => 
-                {
-                    acc[curr.Window] += curr.Value;
-                    return acc;
-                }
-            )
+        var intInput = input.Select(int.Parse).ToArray();
+        return D_1_1(Enumerable
+            .Range(0, intInput.Length - 2)
+            .Select(i => intInput[i..(i + 3)].Sum())
             .Select(i => i.ToString())
             .ToArray()
         );
