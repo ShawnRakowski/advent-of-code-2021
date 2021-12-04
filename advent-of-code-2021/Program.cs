@@ -19,3 +19,9 @@ Console.WriteLine(D_3_1(File.ReadAllLines("./data/D_3/input.txt")));
 
 Console.WriteLine(D_3_2(File.ReadAllLines("./data/D_3/test.txt")));
 Console.WriteLine(D_3_2(File.ReadAllLines("./data/D_3/input.txt")));
+
+Console.WriteLine(D_4_1(File.ReadAllLines("./data/D_4/test.txt")));
+Console.WriteLine(D_4_1(File.ReadAllLines("./data/D_4/input.txt")));
+
+Console.WriteLine(D_4_2(File.ReadAllLines("./data/D_4/test.txt")));
+Console.WriteLine(D_4_2(File.ReadAllLines("./data/D_4/input.txt")));

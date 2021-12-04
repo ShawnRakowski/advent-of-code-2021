@@ -110,4 +110,137 @@ static class Solutions
        
         return (o * c).ToString();
     }
+
+    public class Cell
+    {
+        public int Board;
+        public int Row;
+        public int Column;
+        public int Value;
+        public bool Checked;
+    }
+
+    public static string D_4_1(string[] input)
+    {
+        var numbers = input.First().Split(',').Select(int.Parse);
+
+        var cells = input
+            .Select(x => x.Trim())
+            .Where(x => x != string.Empty)
+            .Skip(1)
+            .SelectMany((x, r) => x.Split()
+                .Where(x => x != string.Empty)
+                .Select(int.Parse)
+                .Select((x, c) => new Cell
+                {
+                    Board = r / 5,
+                    Row = r % 5,
+                    Column = c,
+                    Value = x,
+                    Checked = false
+                })
+            )
+            .ToArray();
+
+        var rows = cells.GroupBy(cells => (cells.Board, cells.Row));
+        var cols = cells.GroupBy(cells => (cells.Board, cells.Column));
+        var paths = rows.Concat(cols).ToArray();
+
+        foreach (var i in numbers)
+        {
+            cells
+                .Where(c => c.Value == i)
+                .ToList()
+                .ForEach(x => x.Checked = true);
+
+            var winningBoard =
+                paths
+                    .Where(p => p.All(v => v.Checked))
+                    .Select(p => (int?)p.Key.Board)
+                    .FirstOrDefault();
+
+            if (winningBoard.HasValue)
+            {
+                return (cells.Where(c => c.Board == winningBoard.Value)
+                    .Where(c => !c.Checked)
+                    .Select(c => c.Value)
+                    .Sum() * i).ToString();
+            }
+        }
+
+        return String.Empty;
+    }
+
+    public class BoardState { public int Round; public int Value; }
+
+    public static string D_4_2(string[] input)
+    {
+        var numbers = input.First().Split(',').Select(int.Parse);
+
+        var cells = input
+            .Select(x => x.Trim())
+            .Where(x => x != string.Empty)
+            .Skip(1)
+            .SelectMany((x, r) => x.Split()
+                .Where(x => x != string.Empty)
+                .Select(int.Parse)
+                .Select((x, c) => new Cell
+                {
+                    Board = r / 5,
+                    Row = r % 5,
+                    Column = c,
+                    Value = x,
+                    Checked = false
+                })
+            )
+            .ToArray();
+
+        var rows = cells.GroupBy(cells => (cells.Board, cells.Row));
+        var cols = cells.GroupBy(cells => (cells.Board, cells.Column));
+        var paths = rows.Concat(cols).ToArray();
+
+        var boardCount = cells.Select(c => c.Board).Distinct().Count();
+        var boardState = Enumerable.Range(0, boardCount).Select(c => new BoardState { Round = -1, Value = -1 }).ToArray();
+
+        var r = 0;
+        foreach (var i in numbers)
+        {
+            cells
+                .Where(c => boardState[c.Board].Round < 0)
+                .Where(c => c.Value == i)
+                .ToList()
+                .ForEach(x => x.Checked = true);
+
+            var newWins = paths
+                .Where(p => p.All(v => v.Checked))
+                .Select(p => p.Key.Board)
+                .Where(b => boardState[b].Round < 0)
+                .ToList();
+
+            newWins
+                .ForEach(b => {
+                    boardState[b].Round = r;
+                    boardState[b].Value = i;
+                    });
+
+            r++;
+        }
+
+        var winningBoard = -1;
+        var topRound = -1;
+        for (var idx = 0; idx < boardCount; idx++)
+        {
+            var currBoardValue = boardState[idx];
+            if (currBoardValue.Round > topRound)
+            {
+                winningBoard = idx;
+                topRound = currBoardValue.Round;
+            }
+        }
+
+        return (cells.Where(c => c.Board == winningBoard)
+            .Where(c => !c.Checked)
+            .Select(c => c.Value)
+            .Sum() * boardState[winningBoard].Value).ToString();
+    }
 }
