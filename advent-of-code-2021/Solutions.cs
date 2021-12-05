@@ -243,4 +243,85 @@ static class Solutions
             .Select(c => c.Value)
             .Sum() * boardState[winningBoard].Value).ToString();
     }
+
+    public static string D_5_1(string[] input)
+    {
+        var map = new Dictionary<(int X, int Y), int>();
+
+        input
+            .Select(i => i.Trim().Replace(" -> ", ";").Split(";"))
+            .Select(i =>
+            (
+                P1: i.First().Split(',').Select(int.Parse).ToArray(),
+                P2: i.Last().Split(',').Select(int.Parse).ToArray()
+            ))
+            .Select(i =>
+            (
+                P1: (X: i.P1[0], Y: i.P1[1]),
+                P2: (X: i.P2[0], Y: i.P2[1])
+            ))
+            .Where(p => p.P1.X == p.P2.X || p.P1.Y == p.P2.Y)
+            .ToList()
+            .ForEach(p =>
+            {
+                var dx = p.P2.X - p.P1.X;
+                var dy = p.P2.Y - p.P1.Y;
+                var sl = (
+                    X: dx < 0 ? -1 : dx == 0 ? 0 : 1,
+                    Y: dy < 0 ? -1 : dy == 0 ? 0 : 1
+                );
+                var current = p.P1;
+                var end = p.P2;
+                while (current.X != end.X || current.Y != end.Y)
+                {
+                    map[current] = map.GetValueOrDefault(current);
+                    map[current] += 1;
+                    current = (X: current.X + sl.X, Y: current.Y + sl.Y);
+                }
+                map[current] = map.GetValueOrDefault(current);
+                map[current] += 1;
+            });
+
+        return map.Values.Count(m => m > 1).ToString();
+    }
+
+    public static string D_5_2(string[] input)
+    {
+        var map = new Dictionary<(int X, int Y), int>();
+
+        input
+            .Select(i => i.Trim().Replace(" -> ", ";").Split(";"))
+            .Select(i =>
+            (
+                P1: i.First().Split(',').Select(int.Parse).ToArray(),
+                P2: i.Last().Split(',').Select(int.Parse).ToArray()
+            ))
+            .Select(i =>
+            (
+                P1: (X: i.P1[0], Y: i.P1[1]),
+                P2: (X: i.P2[0], Y: i.P2[1])
+            ))
+            .ToList()
+            .ForEach(p =>
+            {
+                var dx = p.P2.X - p.P1.X;
+                var dy = p.P2.Y - p.P1.Y;
+                var sl = (
+                    X: dx < 0 ? -1 : dx == 0 ? 0 : 1, 
+                    Y: dy < 0 ? -1 : dy == 0 ? 0 : 1
+                );
+                var current = p.P1;
+                var end = p.P2;
+                while (current.X != end.X || current.Y != end.Y)
+                {
+                    map[current] = map.GetValueOrDefault(current);
+                    map[current] += 1;
+                    current = (X: current.X + sl.X, Y: current.Y + sl.Y);
+                }
+                map[current] = map.GetValueOrDefault(current);
+                map[current] += 1;
+            });
+
+        return map.Values.Count(m => m > 1).ToString();
+    }
 }
