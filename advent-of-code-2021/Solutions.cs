@@ -383,22 +383,6 @@ static class Solutions
                 spawnCount[i] += m;
         }
 
-
-
-        //var totalSpawned = (long)fish.Count();
-
-        //while (fish.Any())
-        //{
-        //    var current = fish.Dequeue();
-        //    var totalCreate = ((period - current.SpawnDay - current.Timer) / 7) + 1;
-        //    var firstSpawn = current.SpawnDay + current.Timer + 1;
-        //    totalSpawned += totalCreate;
-        //    for (var i = firstSpawn; i <= period; i += 7)
-        //    {
-        //        fish.Enqueue((Timer: 8, SpawnDay: i));
-        //    }
-        //}
-
         return total.ToString();
     }
 }
