@@ -107,7 +107,7 @@ static class Solutions
 
         var o = Convert.ToInt32(ov, 2);
         var c = Convert.ToInt32(cv, 2);
-       
+
         return (o * c).ToString();
     }
 
@@ -218,10 +218,11 @@ static class Solutions
                 .ToList();
 
             newWins
-                .ForEach(b => {
+                .ForEach(b =>
+                {
                     boardState[b].Round = r;
                     boardState[b].Value = i;
-                    });
+                });
 
             r++;
         }
@@ -307,7 +308,7 @@ static class Solutions
                 var dx = p.P2.X - p.P1.X;
                 var dy = p.P2.Y - p.P1.Y;
                 var sl = (
-                    X: dx < 0 ? -1 : dx == 0 ? 0 : 1, 
+                    X: dx < 0 ? -1 : dx == 0 ? 0 : 1,
                     Y: dy < 0 ? -1 : dy == 0 ? 0 : 1
                 );
                 var current = p.P1;
@@ -323,5 +324,81 @@ static class Solutions
             });
 
         return map.Values.Count(m => m > 1).ToString();
+    }
+
+    public static string D_6_1(string[] input)
+    {
+        var period = 18;
+
+        var fish = new Queue<(int Timer, int SpawnDay)>(input
+            .First()
+            .Split(",")
+            .Select(int.Parse)
+            .Select(x => (Timer: x, SpawnDay: 0))
+        );
+
+        var totalSpawned = fish.Count();
+
+        while (fish.Any())
+        {
+            var current = fish.Dequeue();
+            var totalCreate = ((period - current.SpawnDay - current.Timer) / 7) + 1;
+            var firstSpawn = current.SpawnDay + current.Timer + 1;
+            for (var i = firstSpawn; i <= period; i += 7)
+            {
+                totalSpawned++;
+                fish.Enqueue((Timer: 8, SpawnDay: i));
+            }
+        }
+
+        return totalSpawned.ToString();
+    }
+
+    public static string D_6_2(string[] input)
+    {
+        var period = 256;
+        var spawnCount = new long[period];
+
+        var init = input
+            .First()
+            .Split(",")
+            .Select(int.Parse)
+            .ToList();
+
+        long total = init.Count;
+        init.ForEach(i => 
+        {
+            spawnCount[i /* -1 + 1 */]++;
+            var firstChildSpawn = (i - 1) + 8;
+            for (var d = firstChildSpawn; d < period; d += 7)
+                spawnCount[d]++;
+        });
+        
+        for (var d = 0; d < spawnCount.Length; d++)
+        {
+            var m = spawnCount[d];
+            total += m;
+            var firstChildSpawn = d + 9;
+            for (var i = firstChildSpawn; i < period; i += 7)
+                spawnCount[i] += m;
+        }
+
+
+
+        //var totalSpawned = (long)fish.Count();
+
+        //while (fish.Any())
+        //{
+        //    var current = fish.Dequeue();
+        //    var totalCreate = ((period - current.SpawnDay - current.Timer) / 7) + 1;
+        //    var firstSpawn = current.SpawnDay + current.Timer + 1;
+        //    totalSpawned += totalCreate;
+        //    for (var i = firstSpawn; i <= period; i += 7)
+        //    {
+        //        fish.Enqueue((Timer: 8, SpawnDay: i));
+        //    }
+        //}
+
+        return total.ToString();
     }
 }

@@ -27,9 +27,17 @@ using static advent_of_code_2021.Solutions;
 //Console.WriteLine(D_4_2(File.ReadAllLines("./data/D_4/input.txt")));
 
 
-Console.WriteLine(D_5_1(File.ReadAllLines("./data/D_5/test.txt")));
-Console.WriteLine(D_5_1(File.ReadAllLines("./data/D_5/input.txt")));
+//Console.WriteLine(D_5_1(File.ReadAllLines("./data/D_5/test.txt")));
+//Console.WriteLine(D_5_1(File.ReadAllLines("./data/D_5/input.txt")));
 
 
-Console.WriteLine(D_5_2(File.ReadAllLines("./data/D_5/test.txt")));
-Console.WriteLine(D_5_2(File.ReadAllLines("./data/D_5/input.txt")));
+//Console.WriteLine(D_5_2(File.ReadAllLines("./data/D_5/test.txt")));
+//Console.WriteLine(D_5_2(File.ReadAllLines("./data/D_5/input.txt")));
+
+
+Console.WriteLine(D_6_1(File.ReadAllLines("./data/D_6/test.txt")));
+Console.WriteLine(D_6_1(File.ReadAllLines("./data/D_6/input.txt")));
+
+Console.WriteLine(D_6_2(File.ReadAllLines("./data/D_6/test.txt")));
+Console.WriteLine(D_6_2(File.ReadAllLines("./data/D_6/input.txt")));
+
