@@ -2,6 +2,19 @@
 
 static class Solutions
 {
+    public static void Execute(int day, int part)
+    {
+        var method = typeof(Solutions)
+            .GetMethods()
+            .SingleOrDefault(m => m.Name == $"D_{day}_{part}");
+
+        if (method != null)
+        {
+            Console.WriteLine(method.Invoke(null, new[] { File.ReadAllLines($"./data/D_{day}/test.txt") }));
+            Console.WriteLine(method.Invoke(null, new[] { File.ReadAllLines($"./data/D_{day}/input.txt") }));
+        }
+    }
+
     public static string D_1_1(string[] input)
     {
         return input
@@ -80,7 +93,6 @@ static class Solutions
 
         return (ge.G * ge.E).ToString();
     }
-
 
     public static string D_3_2(string[] input)
     {
@@ -385,4 +397,34 @@ static class Solutions
 
         return total.ToString();
     }
+
+    public static string D_7_1(string[] input)
+    {
+        return "p1";
+    }
+
+    public static string D_7_2(string[] input)
+    {
+        return "p2";
+    }
+
+    //public static string D_8_1(string[] input)
+    //{
+    //    return "p1";
+    //}
+
+    //public static string D_8_2(string[] input)
+    //{
+    //    return "p2";
+    //}
+
+    //public static string D_9_1(string[] input)
+    //{
+    //    return "p1";
+    //}
+
+    //public static string D_9_2(string[] input)
+    //{
+    //    return "p2";
+    //}
 }

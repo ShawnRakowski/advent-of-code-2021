@@ -2,42 +2,6 @@
 
 using static advent_of_code_2021.Solutions;
 
-//Console.WriteLine(D_1_1(File.ReadAllLines("./data/D_1_1/test.txt")));
-//Console.WriteLine(D_1_1(File.ReadAllLines("./data/D_1_1/input.txt")));
-
-//Console.WriteLine(D_1_2(File.ReadAllLines("./data/D_1_2/test.txt")));
-//Console.WriteLine(D_1_2(File.ReadAllLines("./data/D_1_2/input.txt")));
-
-//Console.WriteLine(D_2_1(File.ReadAllLines("./data/D_2_1/test.txt")));
-//Console.WriteLine(D_2_1(File.ReadAllLines("./data/D_2_1/input.txt")));
-
-//Console.WriteLine(D_2_2(File.ReadAllLines("./data/D_2_2/test.txt")));
-//Console.WriteLine(D_2_2(File.ReadAllLines("./data/D_2_2/input.txt")));
-
-//Console.WriteLine(D_3_1(File.ReadAllLines("./data/D_3/test.txt")));
-//Console.WriteLine(D_3_1(File.ReadAllLines("./data/D_3/input.txt")));
-
-//Console.WriteLine(D_3_2(File.ReadAllLines("./data/D_3/test.txt")));
-//Console.WriteLine(D_3_2(File.ReadAllLines("./data/D_3/input.txt")));
-
-//Console.WriteLine(D_4_1(File.ReadAllLines("./data/D_4/test.txt")));
-//Console.WriteLine(D_4_1(File.ReadAllLines("./data/D_4/input.txt")));
-
-//Console.WriteLine(D_4_2(File.ReadAllLines("./data/D_4/test.txt")));
-//Console.WriteLine(D_4_2(File.ReadAllLines("./data/D_4/input.txt")));
-
-
-//Console.WriteLine(D_5_1(File.ReadAllLines("./data/D_5/test.txt")));
-//Console.WriteLine(D_5_1(File.ReadAllLines("./data/D_5/input.txt")));
-
-
-//Console.WriteLine(D_5_2(File.ReadAllLines("./data/D_5/test.txt")));
-//Console.WriteLine(D_5_2(File.ReadAllLines("./data/D_5/input.txt")));
-
-
-Console.WriteLine(D_6_1(File.ReadAllLines("./data/D_6/test.txt")));
-Console.WriteLine(D_6_1(File.ReadAllLines("./data/D_6/input.txt")));
-
-Console.WriteLine(D_6_2(File.ReadAllLines("./data/D_6/test.txt")));
-Console.WriteLine(D_6_2(File.ReadAllLines("./data/D_6/input.txt")));
-
+var day = 7;
+Execute(day, 1);
+Execute(day, 2);
