@@ -400,12 +400,36 @@ static class Solutions
 
     public static string D_7_1(string[] input)
     {
-        return "p1";
+        var list = input.First().Split(",").Select(int.Parse);
+        var max = list.Max();
+        var min = list.Min();
+        return list.SelectMany((v) =>
+            Enumerable
+                .Range(min, max - min)
+                .Select((i, set) => (set, (int)Math.Abs(i - v)))
+            )
+            .GroupBy(i => i.set)
+            .Select(i => (set: i.Key, sum: i.Select(j => j.Item2).Sum()))
+            .OrderBy(i => i.sum)
+            .First()
+            .ToString();
     }
 
     public static string D_7_2(string[] input)
     {
-        return "p2";
+        var list = input.First().Split(",").Select(int.Parse);
+        var max = list.Max();
+        var min = list.Min();
+        return list.SelectMany((v) =>
+            Enumerable
+                .Range(min, max - min)
+                .Select((i, set) => (set, (int)Math.Abs(i - v)))
+            )
+            .GroupBy(i => i.set)
+            .Select(i => (set: i.Key, sum: i.Select(j => Enumerable.Range(1, j.Item2).Aggregate(0, (acc, k) => acc + k)).Sum()))
+            .OrderBy(i => i.sum)
+            .First()
+            .ToString();
     }
 
     //public static string D_8_1(string[] input)
