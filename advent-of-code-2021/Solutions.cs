@@ -432,15 +432,132 @@ static class Solutions
             .ToString();
     }
 
-    //public static string D_8_1(string[] input)
-    //{
-    //    return "p1";
-    //}
+    public static string D_8_1(string[] input)
+    {
+        var i = input.SelectMany(i => i.Split("|").Last().Split(" ")).Where(i => !string.IsNullOrWhiteSpace(i));
+        return i
+            .Select(i => i.Length)
+            .Where(i => i == 2 || i == 4 || i == 3 || i == 7)
+            .Count()
+            .ToString();
+    }
 
-    //public static string D_8_2(string[] input)
-    //{
-    //    return "p2";
-    //}
+    public static int Solve((string[] Output, IEnumerable<string> All) input)
+    {
+        var decoder = new Dictionary<char, char>();
+
+        var one = input.All.First(i => i.Length == 2);
+        // Console.WriteLine($"1:{one}");
+
+        var four = input.All.First(i => i.Length == 4);
+        // Console.WriteLine($"4:{four}");
+
+        var seven = input.All.First(i => i.Length == 3);
+        // Console.WriteLine($"7:{seven}");
+
+        var eight = input.All.First(i => i.Length == 7);
+        // Console.WriteLine($"8:{eight}");
+
+        var others = input.All.Where(i => i.Length != 2 && i.Length != 4 && i.Length != 3 && i.Length != 7).Distinct();
+        // others.ToList().ForEach(Console.WriteLine);
+
+        var a = seven.Single(x => !one.Contains(x));
+        decoder[a] = 'a';
+        // Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
+
+        var allExcept8 = one.Concat(four).Concat(seven);
+        var eAndG = eight.Where(c => !allExcept8.Contains(c)).ToArray();
+
+        var oneAndSeven = one.Concat(seven);
+        var bAndD = eight.Where(c => four.Contains(c) && !oneAndSeven.Contains(c)).ToArray();
+
+        var six = others.Single(x =>
+            x.Contains(a) &&
+            eAndG.All(x.Contains) &&
+            bAndD.All(x.Contains) &&
+            x != one && x != four && x != seven && x != eight
+        );
+        // Console.WriteLine($"6:{six}");
+
+        var f = six.Single(one.Contains);
+        decoder[f] = 'f';
+        //Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
+
+        var c = one.Single(x => x != f);
+        decoder[c] = 'c';
+        //Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
+
+        var two = others.Single(x =>
+            x.Length == 5 &&
+            eAndG.All(x.Contains) &&
+            x.Contains(a) &&
+            x.Contains(c)
+        );
+
+        var d = two.Single(x => !eAndG.Contains(x) && x != a && x != c);
+        decoder[d] = 'd';
+        //Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
+
+        var b = bAndD.Single(x => x != d);
+        decoder[b] = 'b';
+        //Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
+
+        var nine = others.Single(x =>
+            x.Length == 6 &&
+            new[] { a, b, c, d, f }.All(x.Contains)
+        );
+
+        var g = nine.Single(x => x != a && x != b && x != c && x != d && x != f);
+        decoder[g] = 'g';
+        //Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
+
+        var e = eAndG.Single(x => x != g);
+        decoder[e] = 'e';
+        //Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
+
+        //Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
+
+        for (var i = 0; i < 7; i++)
+            if (!decoder.ContainsKey((char)('a' + i)))
+                throw new Exception("need to be smarter");
+
+        var sequences = new[]
+        {
+            "abcefg",
+            "cf",
+            "acdeg",
+            "acdfg",
+            "bcdf",
+            "abdfg",
+            "abdefg",
+            "acf",
+            "abcdefg",
+            "abcdfg"
+        };
+
+        // input.Output.Select(i => lookup[i])
+        return int.Parse(string.Join("", input.Output
+            .Select(x => String.Join("", x.Select(y => decoder[y]).OrderBy(x => x)))
+            .Select(x => Array.IndexOf(sequences, x).ToString())));
+    }
+
+
+    public static string D_8_2(string[] input)
+    {
+        return input
+            .Select(i =>
+            {
+                var split = i.Split("|").Select(i => i.Trim());
+                return
+                (
+                    Output: split.Last().Split(' '),
+                    All: split.First().Split(' ')
+                );
+            })
+            .Select(i => Solve(i))
+            .Sum()
+            .ToString();
+    }
 
     //public static string D_9_1(string[] input)
     //{
