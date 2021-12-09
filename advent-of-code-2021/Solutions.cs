@@ -447,23 +447,15 @@ static class Solutions
         var decoder = new Dictionary<char, char>();
 
         var one = input.All.First(i => i.Length == 2);
-        // Console.WriteLine($"1:{one}");
 
         var four = input.All.First(i => i.Length == 4);
-        // Console.WriteLine($"4:{four}");
-
         var seven = input.All.First(i => i.Length == 3);
-        // Console.WriteLine($"7:{seven}");
-
         var eight = input.All.First(i => i.Length == 7);
-        // Console.WriteLine($"8:{eight}");
 
         var others = input.All.Where(i => i.Length != 2 && i.Length != 4 && i.Length != 3 && i.Length != 7).Distinct();
-        // others.ToList().ForEach(Console.WriteLine);
-
+        
         var a = seven.Single(x => !one.Contains(x));
         decoder[a] = 'a';
-        // Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
 
         var allExcept8 = one.Concat(four).Concat(seven);
         var eAndG = eight.Where(c => !allExcept8.Contains(c)).ToArray();
@@ -477,15 +469,12 @@ static class Solutions
             bAndD.All(x.Contains) &&
             x != one && x != four && x != seven && x != eight
         );
-        // Console.WriteLine($"6:{six}");
 
         var f = six.Single(one.Contains);
         decoder[f] = 'f';
-        //Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
 
         var c = one.Single(x => x != f);
         decoder[c] = 'c';
-        //Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
 
         var two = others.Single(x =>
             x.Length == 5 &&
@@ -496,11 +485,9 @@ static class Solutions
 
         var d = two.Single(x => !eAndG.Contains(x) && x != a && x != c);
         decoder[d] = 'd';
-        //Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
 
         var b = bAndD.Single(x => x != d);
         decoder[b] = 'b';
-        //Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
 
         var nine = others.Single(x =>
             x.Length == 6 &&
@@ -509,13 +496,9 @@ static class Solutions
 
         var g = nine.Single(x => x != a && x != b && x != c && x != d && x != f);
         decoder[g] = 'g';
-        //Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
 
         var e = eAndG.Single(x => x != g);
         decoder[e] = 'e';
-        //Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
-
-        //Console.WriteLine(string.Join(", ", decoder.Select(d => $"{d.Key}:{d.Value}")));
 
         for (var i = 0; i < 7; i++)
             if (!decoder.ContainsKey((char)('a' + i)))
@@ -541,7 +524,6 @@ static class Solutions
             .Select(x => Array.IndexOf(sequences, x).ToString())));
     }
 
-
     public static string D_8_2(string[] input)
     {
         return input
@@ -559,13 +541,161 @@ static class Solutions
             .ToString();
     }
 
-    //public static string D_9_1(string[] input)
-    //{
-    //    return "p1";
-    //}
 
-    //public static string D_9_2(string[] input)
-    //{
-    //    return "p2";
-    //}
+    public static string D_9_1(string[] input)
+    {
+        var rows = input.Length;
+        var cols = input[0].Length;
+
+        var points = input
+            .Select(i => i.Select(c => int.Parse(c.ToString())))
+            .SelectMany((l, r) => l.Select((v, c) => (Value: v, Row: r, Col: c)))
+            .ToDictionary(
+                k => (Row: k.Row, Col: k.Col),
+                v => v.Value + 1
+            );
+
+        var riskLevel = 0;
+        for (var r = 0; r < rows; r++)
+            for (var c = 0; c < cols; c++)
+            {
+                var point = (Row: r, Col: c);
+                var up = (Row: r - 1, Col: c);
+                var down = (Row: r + 1, Col: c);
+                var left = (Row: r, Col: c - 1);
+                var right = (Row: r, Col: c + 1);
+
+                var value = points[point];
+
+                var adjPoints = new[]
+                {
+                    points.GetValueOr(up, int.MaxValue),
+                    points.GetValueOr(down, int.MaxValue),
+                    points.GetValueOr(left, int.MaxValue),
+                    points.GetValueOr(right, int.MaxValue),
+                };
+
+                if (adjPoints.Any(a => a < value) ||
+                    adjPoints.Where(a => a != int.MaxValue).All(a => a == value))
+                    continue;
+
+                riskLevel += value;
+            }
+
+        return riskLevel.ToString();
+    }
+
+    public static string D_9_2(string[] input)
+    {
+        var rows = input.Length;
+        var cols = input[0].Length;
+
+        var points = input
+            .Select(i => i.Select(c => int.Parse(c.ToString())))
+            .SelectMany((l, r) => l.Select((v, c) => (Value: v, Row: r, Col: c)))
+            .ToDictionary(
+                k => (Row: k.Row, Col: k.Col),
+                v => v.Value
+            );
+
+        var lowPoints = new List<(int Row, int Col)>();
+        for (var r = 0; r < rows; r++)
+            for (var c = 0; c < cols; c++)
+            {
+                var point = (Row: r, Col: c);
+                var up = (Row: r - 1, Col: c);
+                var down = (Row: r + 1, Col: c);
+                var left = (Row: r, Col: c - 1);
+                var right = (Row: r, Col: c + 1);
+
+                var value = points[point];
+
+                var adjPoints = new[]
+                {
+                    points.GetValueOr(up, int.MaxValue),
+                    points.GetValueOr(down, int.MaxValue),
+                    points.GetValueOr(left, int.MaxValue),
+                    points.GetValueOr(right, int.MaxValue),
+                };
+
+                if (adjPoints.Any(a => a < value) ||
+                    adjPoints.Where(a => a != int.MaxValue).All(a => a == value) ||
+                    value == 9)
+                    continue;
+
+                lowPoints.Add(point);
+            }
+
+        return lowPoints
+            .Select((lp, i) => 
+            {
+                var r = FindBasinPoints(null, lp, points, new HashSet<(int Row, int Col)>());
+                // Console.WriteLine($"Set {i + 1} -> {r}");
+                return r;
+            })
+            .OrderByDescending(v => v)
+            // .OutputToConsole()
+            .Take(3)
+            .Multiply()
+            .ToString();
+    }
+
+    private static int FindBasinPoints(
+        (int Row, int Col)? fromPoint,
+        (int Row, int Col) lowPoint,
+        Dictionary<(int Row, int Col), int> points,
+        HashSet<(int Row, int Col)> alreadyFactored)
+    {
+        if (!points.ContainsKey(lowPoint))
+            return 0;
+
+        var pv = points[lowPoint];
+
+        if (pv == 9)
+        {
+            return 0;
+        }
+
+        if (fromPoint.HasValue)
+        {
+            var fromPointValue = points[fromPoint.Value];
+            if (pv <= fromPointValue)
+                return 0;
+        }
+
+        var r = lowPoint.Row;
+        var c = lowPoint.Col;
+
+        var adjPoints = new[]
+        {
+            (Row: r - 1, Col: c),
+            (Row: r + 1, Col: c),
+            (Row: r, Col: c - 1),
+            (Row: r, Col: c + 1),
+        };
+
+        var value = 0;
+        if (!alreadyFactored.Contains(lowPoint))
+        {
+            alreadyFactored.Add(lowPoint);
+            value = 1;
+        }
+
+        // Console.WriteLine($"{lowPoint}:{(fromPoint.HasValue ? points[fromPoint.Value] : "None")}->{pv};+{value}");
+        return value + adjPoints.Select(p => FindBasinPoints(lowPoint, p, points, alreadyFactored)).Sum();
+    }
+}
+
+public static class Ext
+{
+    public static U GetValueOr<T, U>(this Dictionary<T, U> self, T k, U dv) =>
+        self.ContainsKey(k) ? self[k] : dv;
+
+    public static IEnumerable<U> Tee<U>(this IEnumerable<U> u, Action<U> a) =>
+        u.Select(v => { a(v); return v; });
+
+    public static IEnumerable<U> OutputToConsole<U>(this IEnumerable<U> u, Func<U, string>? toString = null) =>
+        u.Tee(v => Console.WriteLine(toString == null ? (v is null ? "null" : v.ToString()) : toString(v)));
+
+    public static int Multiply(this IEnumerable<int> u) => u.Aggregate((a, v) => a * v);
 }
