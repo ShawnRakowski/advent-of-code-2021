@@ -1,6 +1,6 @@
 ﻿namespace advent_of_code_2021;
 
-static class Solutions
+static partial class Solutions
 {
     public static void Execute(int day, int part)
     {
@@ -540,7 +540,6 @@ static class Solutions
             .Sum()
             .ToString();
     }
-
 
     public static string D_9_1(string[] input)
     {
