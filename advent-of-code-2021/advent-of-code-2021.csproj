@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,6 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="RoyT.AStar" Version="3.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="data\D_12\input.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\D_12\test.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="data\D_11\input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
