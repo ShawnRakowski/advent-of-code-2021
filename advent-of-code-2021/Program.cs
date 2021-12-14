@@ -2,6 +2,6 @@
 
 using static advent_of_code_2021.Solutions;
 
-var day = 13;
+var day = 14;
 Execute(day, 1);
 Execute(day, 2);
