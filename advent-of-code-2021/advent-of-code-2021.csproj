@@ -9,10 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dijkstra.NET" Version="1.2.1" />
     <PackageReference Include="RoyT.AStar" Version="3.0.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="data\D_15\input.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\D_15\test.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="data\D_14\input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
