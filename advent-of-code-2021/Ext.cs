@@ -11,7 +11,7 @@ public static class Ext
     public static IEnumerable<U> OutputToConsole<U>(this IEnumerable<U> u, Func<U, string>? toString = null) =>
         u.Tee(v => Console.WriteLine(toString == null ? (v is null ? "null" : v.ToString()) : toString(v)));
 
-    public static int Multiply(this IEnumerable<int> u) => u.Aggregate((a, v) => a * v);
+    public static long Multiply(this IEnumerable<long> u) => u.Aggregate((a, v) => a * v);
 
     public static IEnumerable<(int Row, int Col)> PointRange(int from, int to) => PointRange(from, to, from, to);
 
