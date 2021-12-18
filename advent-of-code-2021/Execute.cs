@@ -12,7 +12,7 @@ static partial class Solutions
 
         if (method != null)
         {
-            //Console.WriteLine(method.Invoke(null, new[] { File.ReadAllLines($"./data/D_{day}/test.txt") }));
+            Console.WriteLine(method.Invoke(null, new[] { File.ReadAllLines($"./data/D_{day}/test.txt") }));
             Console.WriteLine(method.Invoke(null, new[] { File.ReadAllLines($"./data/D_{day}/input.txt") }));
         }
     }
